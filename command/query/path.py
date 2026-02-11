@@ -15,7 +15,7 @@ def enter(path: str):
 
         def calcSize(size: int, level: int):
             units = ["B", "KB", "MB", "GB", "TB", "PB"]
-            if level < len(units) - 1 or size < 1024:
+            if level < len(units) - 1 and size < 1024:
                 return f"{size} {units[level]}"
             return calcSize(size // 1024, level + 1)
 
