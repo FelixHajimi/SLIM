@@ -10,10 +10,10 @@
   "dir.add": "- <path>",
   "dir.del": "- <path>",
   "dir.rename": "- <path> <newPath>",
-  
+
   "query": "-",
   "query.cmd": "- [id]",
   "query.path": "- [path]",
 
-  "fex": "- <path> [encoding:utf-8]"
+  "fex": "- <path> [encoding:utf-8] [plugin]"
 }
