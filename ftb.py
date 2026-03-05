@@ -1,5 +1,6 @@
 import json
 import sys
+import os
 import logging
 import importlib.util as pathImport
 
@@ -10,12 +11,38 @@ logging.basicConfig(
     encoding="utf-8",
 )
 
-commandConfig: dict = json.load(open("./command.json", encoding="utf-8"))
+PATH = os.path.dirname(__file__)
+SETTING = json.load(open(f"{PATH}/setting.json", encoding="utf-8"))
+commandConfig: dict = json.load(open(f"{PATH}/{SETTING["commandConfig"]}", encoding="utf-8"))
 args = sys.argv[1:]
 commands = {
-    key: f"./command/{"/".join(key.split("."))}.py"
+    key: f"{PATH}/{SETTING["commandDir"]}/{"/".join(key.split("."))}.py"
     for key in commandConfig
 }
+TRANMAP = {
+    "zh-cn": {
+        "indexError": "索引选取错误: ",
+        "notFoundCommand": "未找到该命令"
+    },
+    "en-us": {
+        "indexError": "Index selection error: ",
+        "notFoundCommand": "Not found this command"
+    }
+}
+class Tran:
+    def __init__(self, translateMap: dict, lang: str):
+        self.map = translateMap
+        self.lang = lang
+    def run(self, placeholder: str, key: str):
+        if not self.lang in self.map:
+            if "en-us" in self.map:
+                language = "en-us"
+            else:
+                language = next(iter(self.map))
+        else:
+            language = self.lang
+        return placeholder.replace("<?>", self.map[language][key])
+tran = Tran(TRANMAP, SETTING["language"])
 
 
 def runFunc(func, config: str, argsStart: int):
@@ -41,7 +68,7 @@ def runFunc(func, config: str, argsStart: int):
                             else ""
                         )
             except IndexError as error:
-                print(f"索引选取错误: {error}\n{config}")
+                print(tran.run(f"<?>{error}\n{config}", "indexError"))
                 return
         func(**data)
 
@@ -50,12 +77,20 @@ commandConfig = {
     key: commandConfig[key]
     for key in sorted(commandConfig, key=lambda item: len(item), reverse=True)
 }
+configArgs = {
+    "path": PATH,
+    "lang": SETTING["language"],
+    "debug": SETTING["debug"],
+    "tools": {"tran": Tran}
+}
 for id, config in commandConfig.items():
     if id == ".".join(args[: len(id.split("."))]):
         spec = pathImport.spec_from_file_location("func", commands[id])
         func = pathImport.module_from_spec(spec)
         spec.loader.exec_module(func)
+        if hasattr(func, "config"):
+            getattr(func, "config")(**configArgs)
         runFunc(func.enter, config, len(args[: len(id.split("."))]) - 1)
         exit()
-logging.error("未找到该命令")
-print("ERROR: 未找到该命令")
+logging.error(tran.run("<?>", "notFoundCommand"))
+print(tran.run("ERROR: <?>", "notFoundCommand"))

@@ -4,6 +4,32 @@ import stat
 import os
 
 
+tran = None
+TRANMAP = {
+    "zh-cn": {
+        "isFile": "文件?               ",
+        "size": "大小                ",
+        "lastModify": "最后修改时间        ",
+        "lastRead": "最后访问时间        ",
+        "createOrChange": "创建/变更时间       ",
+        "mode": "模式                ",
+    },
+    "en-us": {
+        "isFile": "Is file?            ",
+        "size": "Size                ",
+        "lastModify": "Last modify time    ",
+        "lastVisit": "Last visit time     ",
+        "createOrChange": "Create/Change time  ",
+        "mode": "mode                ",
+    },
+}
+
+
+def config(path: str, lang: str, debug: str, tools: dict):
+    global tran
+    tran = tools["tran"](TRANMAP, lang)
+
+
 def enter(path: str):
     if path == "":
         for file in os.listdir():
@@ -23,11 +49,11 @@ def enter(path: str):
         print(
             f"""
 {p.resolve()}
-文件?               {p.is_file()}
-大小                {calcSize(p.stat().st_size, 0) if p.is_file() else "<DIR>"}
-最后修改时间        {time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(p.stat().st_mtime))}
-最后访问时间        {time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(p.stat().st_atime))}
-创建/变更时间       {time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(p.stat().st_ctime))}
-模式                {stat.filemode(p.stat().st_mode)}
+{tran.run("<?>", "isFile")}{p.is_file()}
+{tran.run("<?>", "size")}{calcSize(p.stat().st_size, 0) if p.is_file() else "<DIR>"}
+{tran.run("<?>", "lastModify")}{time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(p.stat().st_mtime))}
+{tran.run("<?>", "lastVisit")}{time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(p.stat().st_atime))}
+{tran.run("<?>", "createOrChange")}{time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(p.stat().st_ctime))}
+{tran.run("<?>", "mode")}{stat.filemode(p.stat().st_mode)}
 """
         )

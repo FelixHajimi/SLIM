@@ -27,8 +27,7 @@ def folder(root: str, ignore: list[str]=[]):
             try:
                 finded = False
                 for item in ignore:
-                    match = fr"{item.replace(".", "\\.").replace("*", ".*")}"
-                    if re.fullmatch(match, file):
+                    if re.fullmatch(item, file):
                         finded = True
                         break
                 if finded: continue
@@ -42,6 +41,37 @@ def folder(root: str, ignore: list[str]=[]):
                 continue
     func(res, root)
     return res
+
+tran = None
+TRANMAP = {
+    "zh-cn": {
+        "help": """用法: - <mode> [data] "[configs]"
+模式 (Mode):
+  dir <path>                  扫描目录生成树状图
+  file <path>                 从文件加载结构,和text模式的文本类似
+  text "<text>"               直接解析 JSON 字符串 (支持单引号包裹)
+  help                        查看这个帮助
+配置 (Configs)                多参数用分号分隔(例如"ignore=*.pyc|.git;encoding=utf-8;...")
+  ignore=<规则>|<规则>|...    忽略指定的文件或文件夹 (支持通配符*和除了.符号以外的正则表达式)
+  encoding=<编码>             指定读取文件的编码 (仅 file 模式有效)""",
+        "notFoundMode": "没有找到这个模式: ",
+    },
+    "en-us": {
+        "help": """Using: - <mode> [data] "[configs]"
+Mode:
+  dir <path>                  Scan directory to generate tree diagram
+  file <path>                 Load struture from file,similar to text mode text
+  text "<text>"               Parse JSON string (Supports single quotes)
+  help                        Check this help
+Configs                       Multiple parameters are separated by semicolons (Example "ignore=*.pyc|.git;encoding=utf-8;...")
+  ignore=<rule>|<rule>|...    Ignore files or folders (Supports regular expressions)
+  encoding=<encoding>         File encoding (Just file mode valid)""",
+        "notFoundMode": "Not found this mode: ",
+    },
+}
+def config(path: str, lang: str, debug: str, tools: dict):
+    global tran
+    tran = tools["tran"](TRANMAP, lang)
 
 
 def enter(mode: str, data: str, configs: str):
@@ -63,13 +93,6 @@ def enter(mode: str, data: str, configs: str):
         tree = json.loads(data.replace("'", '"'))
         draw(tree)
     elif mode == "help":
-        print("""用法: - <mode> <data> [configs]
-模式 (Mode):
-  dir <path>              实时扫描目录生成树状图
-  file <path>             从文件加载结构
-  text "<text>"           直接解析 JSON 字符串 (支持单引号包裹)
-配置 (Configs)            多参数用分号分隔
-  ignore=<规则>|<规则>    忽略指定的文件或文件夹 (支持通配符*和除了.符号以外的正则表达式)
-  encoding=<编码>         指定读取文件的编码 (仅 file 模式有效)""")
+        print(tran.run("<?>", "help"))
     else:
-        print(f"没有 {mode} 这个模式")
+        print(tran.run(f"<?> {mode}", "notFoundMode"))
