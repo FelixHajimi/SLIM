@@ -29,10 +29,12 @@ regex3 = re.compile(r"\[")
 regex4 = re.compile(r"]")
 regex5 = re.compile(r"\d")
 regex6 = re.compile(r"\".*?\"")
+regex7 = re.compile(r"null|true|false")
 initColor(10, rgb(255, 170, 80))
 initColor(11, rgb(0, 100, 255))
 initColor(12, rgb(50, 255, 50))
 initColor(13, rgb(255, 255, 0))
+initColor(14, rgb(150, 100, 255))
 
 
 def update(highlight: dict[str, list | str]):
@@ -42,8 +44,7 @@ def update(highlight: dict[str, list | str]):
         for range_ in ranges:
             del range_
         ranges = []
-        for style in highlight["highlight"]:
-            highlight["highlight"].pop(0)
+        highlight["highlight"].clear()
         for row, line in enumerate(highlight["fileContent"]):
             for match in regex1.finditer(line):
                 style = key(
@@ -72,6 +73,12 @@ def update(highlight: dict[str, list | str]):
             for match in regex5.finditer(line):
                 style = key(
                     row, match.start(), row, match.end() - 1, curses.color_pair(13)
+                )
+                highlight["highlight"].append(style)
+                ranges.append(style)
+            for match in regex7.finditer(line):
+                style = key(
+                    row, match.start(), row, match.end() - 1, curses.color_pair(14)
                 )
                 highlight["highlight"].append(style)
                 ranges.append(style)
