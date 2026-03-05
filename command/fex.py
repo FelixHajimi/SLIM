@@ -93,11 +93,19 @@ def enter(path: str, encoding: str, plugin: str):
             spec.loader.exec_module(module)
             module.ready({"commands": commands})
         while run:
-            if plugin != "":
-                module.update({"highlight": highlight, "fileContent": fileContent, "path": path})
             # 主要渲染
             height, width = stdscr.getmaxyx()
             stdscr.clear()
+            if plugin != "":
+                module.update(
+                    {
+                        "highlight": highlight,
+                        "fileContent": fileContent[
+                            viewOffset : viewOffset + height - 2
+                        ],
+                        "path": path,
+                    }
+                )
 
             stdscr.addstr(
                 f" {os.path.abspath(path)} - {encoding} ".center(width, "="),
