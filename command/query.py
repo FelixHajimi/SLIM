@@ -1,8 +1,8 @@
 def enter():
     print(
 """
-- (cmd|path)
-- cmd [id]
+- (tree|path)
+- tree (help|dir|text|file)
 - path [path]
 """
     )
