@@ -12,7 +12,7 @@
   "dir.rename": "- <path> <newPath>",
 
   "query": "-",
-  "query.cmd": "- [id]",
+  "query.tree": "- <mode> [data] [configs]",
   "query.path": "- [path]",
 
   "fex": "- <path> [encoding:utf-8] [plugin]"
