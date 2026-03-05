@@ -1,36 +1,36 @@
 # Felix ToolBox
 
-一个轻量级命令行工具调度框架  
-通过配置文件注册命令 自动加载模块 支持参数注入  
-所有命令以统一方式调用 启动即用 无需安装
+A lightweight command-line tool scheduling framework.  
+Registers commands via a configuration file, automatically loads modules, and supports parameter injection.  
+All commands are invoked in a unified manner; ready to use upon startup with no installation required.
 
-## 使用
+## Usage
 
 ```sh
-python ftb.py 命令名 参数...
+python ftb.py <command_name> [arguments...]
 ```
 
-例如
+For example:
 
 ```sh
 python ftb.py fex notes.txt
 python ftb.py file add temp.txt
 ```
 
-程序会根据命令名自动加载 ./command/ 下对应的模块并执行
+The program will automatically load the corresponding module from the `./command/` directory based on the command name and execute it.
 
-## 命令开发规范
+## Command Development Specifications
 
-### 命令要求
+### Command Requirements
 
-- 命令入口函数命名为 enter 并接受命名参数
-- 所有命令必须返回用户可读的反馈信息
-- 命令模块放在 ./command/ 目录下 文件名即命令名
-- 可使用 logging 模块记录运行日志 日志路径为 ./last.log
+- The entry function for a command must be named `enter` and accept named parameters.
+- All commands must return user-readable feedback messages.
+- Command modules must be placed in the `./command/` directory, with the filename matching the command name.
+- The `logging` module can be used to record runtime logs; the log path is `./last.log`.
 
-### 命令注册方式
+### Command Registration Method
 
-通过 command.json 配置参数签名 例如
+Register command parameter signatures via the `command.json` configuration file. For example:
 
 ```json
 {
@@ -40,6 +40,9 @@ python ftb.py file add temp.txt
 }
 ```
 
-其中,`-`为此条命令本身;`<*>`为必填项;`[*]`为可填项,通过`:`后的字符定义默认值
+In this format:
+- `-` represents the command itself.
+- `<*>` denotes a required argument.
+- `[*]` denotes an optional argument, with the default value defined after the colon (`:`).
 
-框架会自动解析命令行输入 并将参数以关键字形式传入 enter 函数
+The framework will automatically parse the command-line input and pass the arguments as keyword arguments to the `enter` function.
