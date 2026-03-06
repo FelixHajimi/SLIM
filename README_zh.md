@@ -34,9 +34,7 @@ python ftb.py file add temp.txt
 
 ```json
 {
-  // ...
   "fex": "- <path> [encoding:utf-8]"
-  // ...
 }
 ```
 
