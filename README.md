@@ -34,9 +34,7 @@ Register command parameter signatures via the `command.json` configuration file.
 
 ```json
 {
-  // ...
   "fex": "- <path> [encoding:utf-8]"
-  // ...
 }
 ```
 
