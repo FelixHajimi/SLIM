@@ -1,4 +1,4 @@
-# Felix ToolBox
+# **S**tandard **L**ightweight **I**ntegrated **M**odule-loader
 
 一个轻量级命令行工具调度框架  
 通过配置文件注册命令 自动加载模块 支持参数注入  
@@ -7,14 +7,14 @@
 ## 使用
 
 ```sh
-python ftb.py 命令名 参数...
+python slim.py 命令名 参数...
 ```
 
 例如
 
 ```sh
-python ftb.py fex notes.txt
-python ftb.py file add temp.txt
+python slim.py fex notes.txt
+python slim.py file add temp.txt
 ```
 
 程序会根据命令名自动加载 ./command/ 下对应的模块并执行
@@ -34,10 +34,14 @@ python ftb.py file add temp.txt
 
 ```json
 {
-  "fex": "- <path> [encoding:utf-8]"
+  "fex": "- <path> [encoding:utf-8] [plugin]"
 }
 ```
 
-其中,`-`为此条命令本身;`<*>`为必填项;`[*]`为可填项,通过`:`后的字符定义默认值
+### 语法指南
+-   `-`：代表命令本身。
+-   `<*>`：**必填**参数（例如 `<path>`）。
+-   `[*]`：**可选**参数。
+    -   可通过 `:` 定义默认值（例如 `[encoding:utf-8]` 表示默认值为 `utf-8`）。
 
 框架会自动解析命令行输入 并将参数以关键字形式传入 `enter` 函数
