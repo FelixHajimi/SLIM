@@ -36,7 +36,7 @@ TRAN = {
     "en-us": {
         "encodingError": "Please check if the opened encoding is correct: ",
         "successExit": "Exited successfully",
-        "fileCharCount": "f'This file has {len('n'.join(fileContent))} characters'",
+        "fileCharCount": "f'This file has {len('\\n'.join(fileContent))} characters'",
         "lineCharCount": "f'Line {int(command[1])} has {len(fileContent[int(command[1]) - 1])} characters'",
         "using": "Usage: ",
         "error": "Error: ",
