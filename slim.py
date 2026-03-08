@@ -3,6 +3,7 @@ import json
 import logging
 import os
 import pathlib
+import re
 import sys
 
 
@@ -28,6 +29,22 @@ def runFunc(func, config: str, argsStart: int):
                             if len(args) - 1 >= index + 1 + argsStart
                             else None
                         )
+                elif arg[0] == "@":
+                    match = re.fullmatch(r"([a-zA-Z\d]+)(\(.*\))?(:\d+)?", arg[1:])
+                    if not match or not match.group(1):
+                        continue
+                    
+                    if not match.group(3):
+                        data[match.group(1)] = args[index + 1 + argsStart:]
+                    else:
+                        data[match.group(1)] = args[index + 1 + argsStart:index + 1 + argsStart + int(match.group(3)[1:])]
+                    if match.group(2):
+                        for idx, item in enumerate(data[match.group(1)]):
+                            if not re.fullmatch(match.group(2)[1:-1], item):
+                                data[match.group(1)][idx] = None
+                    if match.group(3):
+                        for idx in range(int(match.group(3)[1:])-len(data[match.group(1)])):
+                            data[match.group(1)].append(None)
             except IndexError as error:
                 print(tran.run("indexError", f"<?>{error}\n{config}"))
                 return
