@@ -154,7 +154,7 @@ def enter(path: str, encoding: str, plugin: str):
         curses.init_pair(3, curses.COLOR_YELLOW, -1)
         curses.init_pair(4, curses.COLOR_BLACK, curses.COLOR_GREEN)
 
-        if plugin != "":
+        if not plugin is None:
             spec = pathImport.spec_from_file_location("highlight", plugin)
             module = pathImport.module_from_spec(spec)
             spec.loader.exec_module(module)
@@ -163,7 +163,7 @@ def enter(path: str, encoding: str, plugin: str):
             # 主要渲染
             height, width = window.getmaxyx()
             window.clear()
-            if plugin != "":
+            if not plugin is None:
                 module.update(
                     {
                         "highlight": highlight,
