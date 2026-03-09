@@ -1,5 +1,6 @@
 import curses
 import re
+import typing
 
 
 def rgb(r: int, g: int, b: int):
@@ -19,6 +20,7 @@ def ready(commands: dict[str, list]):
     def test1(command: list):
         if " ".join(command) == "hello":
             return "Hello World!"
+
     commands["commands"].append(test1)
 
 
@@ -37,7 +39,13 @@ initColor(13, rgb(255, 255, 0))
 initColor(14, rgb(150, 100, 255))
 
 
-def update(highlight: dict[str, list | str]):
+class highlightType(typing.TypedDict):
+    path: str
+    highlight: list
+    fileContent: list[str]
+
+
+def update(highlight: highlightType):
     global ranges
 
     if highlight["path"].endswith(".json"):
