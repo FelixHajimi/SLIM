@@ -1,31 +1,32 @@
-# This article explains how to configure `command.json`
+# This article will explain how to configure `command.json`
 
 ## Example
 ```json
 {
-"status": "-",
-"scan": "- <mode> [timeout:10] @targets(^[a-z] $):3",
-"upload": "- @files(.png$)"
+  "status": "-",
+  "scan": "- <mode> [timeout:10] @targets(^[a-z]+$):3",
+  "upload": "- @files(\\.png$)"
 }
 ```
 
 ## Parameter Concepts
-`"script": "Here is the parameter format. Fill in parameters within the format, and separate parameters with spaces"`
-| Symbol | Example | Definition |
+`"script": "This is the parameter format, parameters are filled in the parameter format, separated by spaces"`
+| Symbol | Example | Definition Effect |
 | :---: | :--- | :--- |
 | **`-`** | `-` | Represents the command itself |
-| **`<Required Parameter>`** | `<file>` | Forces the user to input; error if missing |
-| **`[Optional Parameter]`** | `[debug]` | User input is optional; defaults to `None` if missing |
-| **`[Optional Parameter:Default]`** | `[port:8080]` | Uses the default value if user does not input |
-| **`@Array Parameter`** | `@src` | Automatically collects all remaining parameters into a list |
-| **`@Array Parameter(Regex)`** | `@log(.txt$)` | List items must match the regex, otherwise set to `None` |
-| **`@Array Parameter:Length`** | `@vec:3` | Forces the list length to 3; fill with `None` if insufficient |
+| **`<required parameter>`** | `<file>` | Forces user input, reports an error if missing |
+| **`[optional parameter]`** | `[debug]` | User can input or not, defaults to `None` if missing |
+| **`[optional parameter:default value]`** | `[port:8080]` | Automatically fills with default value when user does not input |
+| **`@array parameter`** | `@src` | Automatically collects all remaining parameters as a list |
+| **`@array parameter (regex)`** | `@log(\.txt$)` | List items must match the regex, otherwise set to `None` |
+| **`@array parameter:length`** | `@vec:3` | Forces list length to be 3, fills with `None` if insufficient |
 
-**Note**: Each parameter format must be prefixed with `-` or `- `. If there are additional parameters following, use `- `; otherwise, use `-`. 
-If the parameter format only has `-`, it directly calls the `enter` function.
-Regex for array parameters can also be combined with length: `- @args(d):5` means take the last 5 parameters that match the regex.
+**Note**: Each parameter format must be prefixed with `-` or `- `. If there are other parameters after it, use `- `; if not, use `-`  
+If only `-` is written in the parameter format, the `enter` function will be called directly  
+Array parameter regex can also be used with length: `- @args(\d+):5`, meaning take the last 5 parameters and all parameters that match the regex
 
 ## Command ID
-`"This is the command ID used to specify where the command is called": "format"`
-It is important to note that the ID must be written in the file referenced by `commandConfig` in your `setting.json`.
-Also, IDs must be separated by a `.`. For example, `file.add` indicates `commandDir/file/add.py`, where `file` represents `commandDir/file.py`.
+`"This is the command ID, used to specify where the command is called": "format"`  
+It should be noted that: The ID must be written in the file pointed to by `commandConfig` in your `setting.json`  
+And the ID must be separated by `"."`, for example `file.add` means in `commandDir/file/add.py`  
+Then `file` means in `commandDir/file.py`
