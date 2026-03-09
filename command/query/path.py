@@ -38,7 +38,7 @@ def config(path: str, lang: str, debug: str, tools: dict):
     tran = tools["tran"](TRANMAP, lang)
 
 
-def enter(path: str):
+def enter(path: str | None):
     if path is None:
         for file in os.listdir():
             p = pathlib.Path(os.path.abspath(file))

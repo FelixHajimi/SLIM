@@ -49,11 +49,9 @@ def folder(root: str, ignore: list[str] = []):
 
 
 class Tran:
-    def __init__(self, translateMap: dict, lang: str):
-        ...
+    def __init__(self, translateMap: dict, lang: str): ...
 
-    def run(self, key: str, content: str = "<?>") -> str:
-        ...
+    def run(self, key: str, content: str = "<?>") -> str: ...
 
 
 tran: Tran
@@ -90,7 +88,9 @@ def config(path: str, lang: str, debug: str, tools: dict):
     tran = tools["tran"](TRANMAP, lang)
 
 
-def enter(mode: str, data: str, configs: str | None):
+def enter(mode: str, data: str | None, configs: str | None):
+    if not data:
+        return
     if configs is not None:
         config = {
             item.split("=")[0]: item.split("=")[-1] for item in configs.split(";")
