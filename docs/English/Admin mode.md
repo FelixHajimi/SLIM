@@ -1,10 +1,10 @@
-# This article will cover all the commands in Operator Mode and how to use them
+# This article will explain all commands in operator mode and how to use them
 
-## How to Run Operator Mode
+## How to run operator mode
 ```bash
-# This is how you usually use SLIM
+# You usually use SLIM like this
 slim script subscript args...
-# But to use operator mode, you need to prefix it with the --admin logo
+# But to use operator mode, you need to add the --admin flag in front
 slim --admin adminscript args...
 ```
 
@@ -18,9 +18,9 @@ slim --admin help fex
 ```bash
 slim --admin help [id]
 ```
-## Parsing
-If there is no id parameter, the ID of all commands and its parameter format are directly output
-For example, 'slim --admin help'
+## Explanation
+If there is no id parameter, it will directly output all command IDs and their parameter formats
+For example `slim --admin help`
 ```txt
 file : -
 file.add : - <path>
@@ -34,8 +34,8 @@ query.path : - [path]
 query.cmd : - [id]
 fex : - <path> [encoding:utf-8] [plugin]
 ```
-If it contains an id parameter, output the ID and parameter format of the command
-For example, 'slim --admin help fex'
+If an id parameter is included, it will output the ID and parameter format of that command
+For example `slim --admin help fex`
 ```txt
 fex : - <path> [encoding:utf-8] [plugin]
 ```
@@ -51,10 +51,10 @@ slim --admin create test "- <name>"
 ```bash
 slim --admin create [id] [format]
 ```
-### Parsing
-If neither the id parameter nor the format parameter is written, it scans the commandConfig and determines if the command ID is in the commandDir  
-If not, create and write the parameters in 'commandDir'
+### Explanation
+If neither the `id parameter` nor the `format parameter` is written, it will scan `commandConfig` and check whether the command ID exists in `commandDir`
+If it does not exist, it will be created in `commandDir` with parameters written
 
-If the 'id parameter' is written, the 'id' will be added to 'commandConfig' and 'commadnDir', but the parameter format is '-'
+If the `id parameter` is written, this `id` will be added to `commandConfig` and `commandDir`, but the parameter format will be `-`
 
-If you write the 'format parameter' and 'id parameter', this 'id' and the corresponding 'format' will be added to 'commandConfig' and 'commadnDir'
+If both the `format parameter` and `id parameter` are written, this `id` and the corresponding `format` will be added to `commandConfig` and `commandDir`
