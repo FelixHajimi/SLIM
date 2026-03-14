@@ -2,11 +2,11 @@
   "file": "-",
   "file.add": "- <path>",
   "file.del": "- <path>",
-  "file.load": "- <path> [encoding:utf-8]",
+  "file.load": "- <path> [encoding=utf-8]",
   "file.move": "- <path> <newPath>",
   "file.rename": "- <path> <newName>",
   "query": "-",
   "query.tree": "- <mode> [data] [configs]",
   "query.path": "- [path]",
-  "fex": "- <path> [encoding:utf-8] [plugin]"
+  "fex": "- <path> [encoding=utf-8] [plugin]"
 }
