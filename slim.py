@@ -17,7 +17,7 @@ def configParser(config: str):
         )
         if match1:
             if not match1.group(2):
-                raise SyntaxError(f"请填写参数名: {arg}")
+                raise SyntaxError(tran.run("fillName", f"<?>{arg}"))
             res.append(
                 {
                     "type": 1,
@@ -29,7 +29,7 @@ def configParser(config: str):
             )
         elif match2:
             if not match2.group(2):
-                raise SyntaxError(f"请填写参数名: {arg}")
+                raise SyntaxError(tran.run("fillName", f"<?>{arg}"))
             res.append(
                 {
                     "type": 2,
@@ -41,7 +41,7 @@ def configParser(config: str):
                 }
             )
         else:
-            raise SyntaxError(f"没有匹配此格式的参数: {arg}")
+            raise SyntaxError(tran.run("notMatchFormat", f"<?>{arg}"))
     return res
 
 
@@ -204,13 +204,18 @@ logging.basicConfig(
 PATH = os.path.dirname(os.path.abspath(__file__))
 TRAN = {
     "zh-cn": {
-        "requiredError": 'f"你有一个必填项未填写: 应该在第{index}个参数填写,参数名为{arg["name"]}"',
+        "requiredError": 'f"你有一个必填项未填写: 应该在第 {index} 个参数填写,参数名为 {arg["name"]}"',
         "notFoundCommand": "未找到该命令: ",
         "createdFile": "已创建文件至: ",
+        "fillName": "请填写参数名: ",
+        "notMatchFormat": "没有匹配此格式的参数: ",
     },
     "en-us": {
-        "indexError": "Index selection error: ",
-        "notFoundCommand": "Not found this command",
+        "requiredError": 'f"You have a required parameter not filled: should be filled at position {index}, parameter name is {arg["name"]}"',
+        "notFoundCommand": "Command not found: ",
+        "createdFile": "File created at: ",
+        "fillName": "Please fill in parameter name: ",
+        "notMatchFormat": "No parameter matching this format: ",
     },
 }
 SETTING = json.load(open(f"{PATH}/setting.json", encoding="utf-8"))
