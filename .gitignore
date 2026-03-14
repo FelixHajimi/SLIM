@@ -9,6 +9,9 @@ __pycache__
 *.build
 *.dist
 *.onefile-build
+*.BUI
+*.ONE
+*.DIS
 
 # Program
 slim.exe
