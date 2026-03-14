@@ -75,7 +75,7 @@ Write mode: You can edit the file
 }
 
 
-def config(path: str, lang: str, debug: str, tools: dict):
+def config(lang: str, tools: dict, **args):
     global tran
     tran = tools["tran"](TRAN, lang)
 
